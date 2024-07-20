@@ -5,7 +5,7 @@ app = Flask(__name__)
 # Route to return student number
 @app.route('/')
 def home():
-    return jsonify({"student_number": "YOUR_STUDENT_NUMBER"})
+    return jsonify({"student_number": "200555449"})
 
 # Route to handle Dialogflow webhook requests
 @app.route('/webhook', methods=['POST'])
