@@ -3,25 +3,31 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # Route to return student number
-@app.route('/', methods=['GET'])
-def get_student_number():
-    student_number = "200555449"  # Replace with your actual student number
-    return jsonify({"student_number": student_number})
+@app.route('/')
+def home():
+    return jsonify({"student_number": "YOUR_STUDENT_NUMBER"})
 
-# Webhook route for Dialogflow fulfillment
+# Route to handle Dialogflow webhook requests
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
-    intent = req.get('queryResult').get('intent').get('displayName')
+    
+    # Extract intent name from the request
+    intent = req.get('queryResult', {}).get('intent', {}).get('displayName', '')
 
-    # Example of handling different intents
+    # Example of handling different intents and generating responses
     if intent == 'AnimeStudioDetails':
-        response_text = "This is the response for AnimeStudioDetails intent."
+        response_text = "Here is the information about the anime studio."
     elif intent == 'AnimeRecommendation':
-        response_text = "This is the response for AnimeRecommendation intent."
+        response_text = "Here are some anime recommendations."
+    elif intent == 'AnimeByCharacter':
+        response_text = "You can find anime recommendations based on characters."
+    elif intent == 'AnimeGenre':
+        response_text = "Here are anime recommendations based on genres."
     else:
         response_text = "I'm not sure how to respond to that."
 
+    # Return the response in the required format
     return jsonify({
         "fulfillmentText": response_text
     })
